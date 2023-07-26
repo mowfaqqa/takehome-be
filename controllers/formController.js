@@ -1,35 +1,37 @@
-const FormEntry = require("../models/formModel");
-const asyncHandler = require("express-async-handler");
+const admin = require("firebase-admin");
 
-const submitData = asyncHandler(async (req, res) => {
+exports.submitData = async (req, res) => {
   const { company, numUsers, numProducts, percentage } = req.body;
 
-  //controller to create a new form entry
-  const formEntry = await FormEntry.create({
-    company,
-    numUsers,
-    numProducts,
-    percentage,
-  });
-  if (formEntry) {
-    res.status(200).json({
-      message: "Form submitted successfully",
-      data: { ...formEntry },
-      success: true,
+  try {
+    // Create a new document in the 'data' collection
+    await db.collection("data").add({
+      company,
+      numUsers,
+      numProducts,
+      percentage,
     });
-  } else {
-    res.status(400).json({ message: "Invalide form data" });
+
+    res.status(200).json({ message: "Data submitted successfully" });
+  } catch (error) {
+    console.error("Error submitting data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-});
+};
 
-// controller for user C to fetch data
-const fetchData = asyncHandler(async (req, res) => {
-  //FETCH ALL FORM
-  const dataEntries = await FormEntry.find();
-  res.status(200).json({ data: dataEntries });
-});
+exports.fetchData = async (req, res) => {
+  try {
+    const dataEntries = [];
+    // Fetch all documents from the 'data' collection
+    const snapshot = await db.collection("data").get();
 
-module.exports = {
-  submitData,
-  fetchData,
+    snapshot.forEach((doc) => {
+      dataEntries.push({ id: doc.id, ...doc.data() });
+    });
+
+    res.status(200).json(dataEntries);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
