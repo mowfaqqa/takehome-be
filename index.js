@@ -5,8 +5,10 @@ const authRoute = require("./routes/authRoute");
 const formRoute = require("./routes/formRoutes");
 
 const admin = require("firebase-admin");
-const credentials = require("./takehome-569ec-firebase-adminsdk.json");
+require("dotenv").config();
+const credentials = JSON.parse(process.env.SERVICE_ACCOUNT);
 
+// initialize firebase admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(credentials),
 });
