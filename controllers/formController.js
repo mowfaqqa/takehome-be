@@ -23,6 +23,13 @@ const submitData = asyncHandler(async (req, res) => {
 });
 
 // controller for user C to fetch data
+const fetchData = asyncHandler(async (req, res) => {
+  //FETCH ALL FORM
+  const dataEntries = await FormEntry.find();
+  res.status(200).json({ data: dataEntries });
+});
+
 module.exports = {
   submitData,
+  fetchData,
 };
