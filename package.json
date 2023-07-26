@@ -4,7 +4,7 @@
   "description": "take home assessment",
   "main": "index.js",
   "repository": "https://github.com/mowfaqqa/takehome-be.git",
-  "scripts":{
+  "scripts": {
     "start": "nodemon index.js"
   },
   "author": "Muwaffaq Aliyu",
@@ -15,8 +15,7 @@
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "firebase-admin": "^11.10.1",
-    "jsonwebtoken": "^9.0.1",
-    "mongoose": "^7.4.1"
+    "jsonwebtoken": "^9.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
