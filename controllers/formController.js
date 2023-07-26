@@ -1,6 +1,8 @@
 const admin = require("firebase-admin");
 
 exports.submitData = async (req, res) => {
+  const db = admin.firestore();
+
   const { company, numUsers, numProducts, percentage } = req.body;
 
   try {
@@ -20,16 +22,15 @@ exports.submitData = async (req, res) => {
 };
 
 exports.fetchData = async (req, res) => {
+  const db = admin.firestore();
   try {
-    const dataEntries = [];
-    // Fetch all documents from the 'data' collection
-    const snapshot = await db.collection("data").get();
-
-    snapshot.forEach((doc) => {
-      dataEntries.push({ id: doc.id, ...doc.data() });
+    const dataRef = db.collection("data");
+    const response = await dataRef.get();
+    let resArray = [];
+    response.forEach((doc) => {
+      resArray.push(doc.data());
     });
-
-    res.status(200).json(dataEntries);
+    res.status(200).json({ data: resArray });
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ error: "Internal Server Error" });

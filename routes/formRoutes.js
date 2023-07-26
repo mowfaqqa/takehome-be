@@ -6,6 +6,6 @@ const { submitData, fetchData } = require("../controllers/formController");
 router.post("/submit", submitData);
 
 // endpoint for user C to fetch data
-router.get("data", fetchData);
+router.get("/data", fetchData);
 
 module.exports = router;

@@ -20,8 +20,6 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
-//  DATABASE CONNECTION
-const db = admin.firestore();
 
 // ROUTES
 app.use("/api/auth", authRoute);
