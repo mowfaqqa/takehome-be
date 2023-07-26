@@ -1,5 +1,4 @@
 const admin = require("firebase-admin");
-const storage = admin.storage().bucket();
 
 exports.submitData = async (req, res) => {
   const db = admin.firestore();
@@ -28,20 +27,23 @@ exports.submitData = async (req, res) => {
 };
 
 exports.uploadImage = async (req, res) => {
-  const {dataId} = req.params;
-  const { email } = req.body
+  const db = admin.firestore();
+  const storage = admin.storage().bucket();
+
+  const { dataId } = req.params;
+  const { email } = req.body;
   const authorizedEmail = "admin@email.com";
 
   try {
     // Check if the email is authorized to upload images
     if (email !== authorizedEmail) {
-      return res.status(403).json({ error: 'Unauthorized to upload image' });
+      return res.status(403).json({ error: "Unauthorized to upload image" });
     }
 
-    const dataRef = db.collection('data').doc(dataId);
+    const dataRef = db.collection("data").doc(dataId);
 
     if (!req.file) {
-      return res.status(400).json({ error: 'No image provided' });
+      return res.status(400).json({ error: "No image provided" });
     }
 
     const imageFile = req.file;
@@ -57,12 +59,12 @@ exports.uploadImage = async (req, res) => {
     // Update the 'imageUrl' field in the Firestore document
     await dataRef.update({ imageUrl });
 
-    res.status(200).json({ message: 'Image uploaded successfully' });
+    res.status(200).json({ message: "Image uploaded successfully" });
   } catch (error) {
-    console.error('Error uploading image:', error);
-    res.status(500).json({ error: 'Image upload failed' });
+    console.error("Error uploading image:", error);
+    res.status(500).json({ error: "Image upload failed" });
   }
-}
+};
 exports.fetchData = async (req, res) => {
   const db = admin.firestore();
   try {

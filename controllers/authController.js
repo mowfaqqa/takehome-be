@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const admin = require("firebase-admin");
 const generateToken = require("../utils/generateToken");
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
