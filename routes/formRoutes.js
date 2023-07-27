@@ -10,7 +10,7 @@ const checkEmailMiddleware = require("../middleware/checkEmailMiddleware");
 router.post("/submit", submitData);
 
 // endpoint for user C to fetch data
-router.get("/data", checkEmailMiddleware, fetchData);
+router.get("/data",  fetchData);
 // endpoint for User C to upload an image
 router.post("/upload/:dataId", uploadImage);
 

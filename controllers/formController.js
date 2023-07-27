@@ -67,14 +67,8 @@ exports.uploadImage = async (req, res) => {
 };
 exports.fetchData = async (req, res) => {
   const db = admin.firestore();
-  const { email } = req.params;
-  try {
-    // Check if the email is authorized to fetch data
-    const allowedEmail = "admin@email.com";
 
-    if (email !== allowedEmail) {
-      return res.status(403).json({ error: "Unauthorized to fetch data" });
-    }
+  try {
 
     const dataEntries = [];
     // Fetch all documents from the 'data' collection
