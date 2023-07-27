@@ -67,14 +67,25 @@ exports.uploadImage = async (req, res) => {
 };
 exports.fetchData = async (req, res) => {
   const db = admin.firestore();
+  const { email } = req.query; // Extract the email from the query parameter
+
   try {
-    const dataRef = db.collection("data");
-    const response = await dataRef.get();
-    let resArray = [];
-    response.forEach((doc) => {
-      resArray.push(doc.data());
+    // Check if the email is authorized to fetch data
+    const allowedEmail = "userc@example.com"; // Replace with the authorized email address
+
+    if (email !== allowedEmail) {
+      return res.status(403).json({ error: "Unauthorized to fetch data" });
+    }
+
+    const dataEntries = [];
+    // Fetch all documents from the 'data' collection
+    const snapshot = await db.collection("data").get();
+
+    snapshot.forEach((doc) => {
+      dataEntries.push({ id: doc.id, ...doc.data() });
     });
-    res.status(200).json({ data: resArray });
+
+    res.status(200).json(dataEntries);
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ error: "Internal Server Error" });
