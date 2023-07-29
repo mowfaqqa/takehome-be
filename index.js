@@ -17,7 +17,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Server is running");
+  res.send(
+    "Submit form : api/submit, Login : api/auth/login/, Upload Image : api/uplaod Fetch data :api/data"
+  );
 });
 
 // ROUTES
